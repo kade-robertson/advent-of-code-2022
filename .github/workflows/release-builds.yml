@@ -38,9 +38,7 @@ jobs:
           echo "::set-output name=githash::$(git rev-parse --short HEAD)"
 
       - name: Build
-        run: |
-          cargo build --release
-          cargo strip
+        run: cargo build --release
 
       - name: Move executable
         run: |
