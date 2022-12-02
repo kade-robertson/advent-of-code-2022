@@ -7,31 +7,31 @@ impl Problem01 {
         Problem01 {}
     }
 
-    fn parse(&self, data: &str) -> Vec<Vec<i64>> {
+    fn parse(&self, data: &str) -> Vec<Vec<u32>> {
         let mut all_callories = Vec::new();
-        let mut current_calories: Vec<i64> = Vec::new();
+        let mut current_calories: Vec<u32> = Vec::new();
 
         for line in data.lines() {
             if line.is_empty() {
                 all_callories.push(current_calories);
                 current_calories = Vec::new();
             } else {
-                current_calories.push(line.parse::<i64>().unwrap());
+                current_calories.push(line.parse::<u32>().unwrap());
             }
         }
 
         all_callories
     }
 
-    fn solve_actual(&self, calorie_counts: &[Vec<i64>]) -> i64 {
+    fn solve_actual(&self, calorie_counts: &[Vec<u32>]) -> u32 {
         calorie_counts.iter().map(|c| c.iter().sum()).max().unwrap()
     }
 
-    fn solve_actual_part2(&self, calorie_counts: &[Vec<i64>]) -> i64 {
+    fn solve_actual_part2(&self, calorie_counts: &[Vec<u32>]) -> u32 {
         let mut total_counts = calorie_counts
             .iter()
             .map(|c| c.iter().sum())
-            .collect::<Vec<i64>>();
+            .collect::<Vec<u32>>();
         total_counts.sort();
 
         total_counts.iter().rev().take(3).sum()
@@ -46,13 +46,13 @@ impl Problem for Problem01 {
     fn solve(&self) -> i64 {
         let data = get_input!("./inputs/problem_01.txt");
         let calorie_counts = self.parse(&data);
-        self.solve_actual(&calorie_counts)
+        self.solve_actual(&calorie_counts).into()
     }
 
     fn solve_part2(&self) -> i64 {
         let data = get_input!("./inputs/problem_01.txt");
         let calorie_counts = self.parse(&data);
-        self.solve_actual_part2(&calorie_counts)
+        self.solve_actual_part2(&calorie_counts).into()
     }
 }
 
@@ -62,7 +62,7 @@ mod tests {
 
     #[test]
     fn test_solve_actual_from_example() {
-        let data: Vec<Vec<i64>> = vec![
+        let data: Vec<Vec<u32>> = vec![
             vec![1000, 2000, 3000],
             vec![4000],
             vec![5000, 6000],
@@ -75,7 +75,7 @@ mod tests {
 
     #[test]
     fn test_solve_actual_part2_from_example() {
-        let data: Vec<Vec<i64>> = vec![
+        let data: Vec<Vec<u32>> = vec![
             vec![1000, 2000, 3000],
             vec![4000],
             vec![5000, 6000],

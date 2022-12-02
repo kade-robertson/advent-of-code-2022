@@ -16,14 +16,8 @@ struct RPSGame {
 }
 
 impl RPSGame {
-    fn calculate_points(&self) -> i64 {
-        let mut total_points = match self.me {
-            RPSMove::Rock => 1,
-            RPSMove::Paper => 2,
-            RPSMove::Scissors => 3,
-        };
-
-        total_points += match (&self.elf, &self.me) {
+    const fn determine_result(&self) -> u16 {
+        match (&self.elf, &self.me) {
             (RPSMove::Rock, RPSMove::Paper)
             | (RPSMove::Paper, RPSMove::Scissors)
             | (RPSMove::Scissors, RPSMove::Rock) => 6,
@@ -31,9 +25,15 @@ impl RPSGame {
             | (RPSMove::Paper, RPSMove::Rock)
             | (RPSMove::Scissors, RPSMove::Paper) => 0,
             _ => 3,
-        };
+        }
+    }
 
-        total_points
+    const fn calculate_points(&self) -> u16 {
+        (match self.me {
+            RPSMove::Rock => 1,
+            RPSMove::Paper => 2,
+            RPSMove::Scissors => 3,
+        }) + self.determine_result()
     }
 }
 
@@ -90,7 +90,7 @@ impl Problem02 {
         all_games
     }
 
-    fn solve_actual(&self, rps_games: &[RPSGame]) -> i64 {
+    fn solve_actual(&self, rps_games: &[RPSGame]) -> u16 {
         rps_games.iter().map(|g| g.calculate_points()).sum()
     }
 }
@@ -103,13 +103,13 @@ impl Problem for Problem02 {
     fn solve(&self) -> i64 {
         let data = get_input!("./inputs/problem_02.txt");
         let rps_games = self.parse(&data);
-        self.solve_actual(&rps_games)
+        self.solve_actual(&rps_games).into()
     }
 
     fn solve_part2(&self) -> i64 {
         let data = get_input!("./inputs/problem_02.txt");
         let rps_games = self.parse_part2(&data);
-        self.solve_actual(&rps_games)
+        self.solve_actual(&rps_games).into()
     }
 }
 
