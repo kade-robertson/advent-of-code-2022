@@ -10,7 +10,7 @@ mod problem_02;
 mod util;
 
 fn main() {
-    println!("~ Advent of Code 2021 ~");
+    println!("~ Advent of Code 2022 ~");
 
     let problems: Vec<Box<dyn Problem>> = vec![
         Box::new(problem_01::Problem01::new()),
