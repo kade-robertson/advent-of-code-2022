@@ -33,9 +33,10 @@ jobs:
   
       - name: Set outputs
         id: vars
+        shell: bash
         run: |
           echo "version=$(date +%Y.%m.%d)" >> $GITHUB_OUTPUT
-          echo "commits=$(git rev-list --count HEAD)" >> $GITHUB_OUTPUT
+          echo "commits=$(git rev-list --count origin/master)" >> $GITHUB_OUTPUT
           echo "githash=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Build
