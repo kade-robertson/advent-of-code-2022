@@ -2,37 +2,36 @@ use crate::problem::Problem;
 
 pub struct Problem03 {}
 
-#[derive(Debug)]
 struct Rucksack {
     first: u64,
     second: u64,
     combined: u64,
 }
 
+fn char_to_priority(c: char) -> u8 {
+    if c.is_uppercase() {
+        // A-Z starts at index 65, so for the range to be from 27-52 we
+        // subtract 38.
+        (c as u8) - 38
+    } else {
+        // a-z starts at index 97, so we subtract 96.
+        (c as u8) - 96
+    }
+}
+
+const fn set_bit(start: u64, priority: u8) -> u64 {
+    let bit_to_set = 1 << priority;
+
+    if start & bit_to_set == 0 {
+        start + bit_to_set
+    } else {
+        start
+    }
+}
+
 impl Problem03 {
     pub fn new() -> Problem03 {
         Problem03 {}
-    }
-
-    fn char_to_priority(&self, c: char) -> u8 {
-        if c.is_uppercase() {
-            // A-Z starts at index 65, so for the range to be from 27-52 we
-            // subtract 38.
-            (c as u8) - 38
-        } else {
-            // a-z starts at index 97, so we subtract 96.
-            (c as u8) - 96
-        }
-    }
-
-    const fn set_bit(&self, start: u64, priority: u8) -> u64 {
-        let bit_to_set = 1 << priority;
-
-        if start & bit_to_set == 0 {
-            start + bit_to_set
-        } else {
-            start
-        }
     }
 
     fn parse(&self, data: &str) -> Vec<Rucksack> {
@@ -45,19 +44,19 @@ impl Problem03 {
                 stripped_line
                     .char_indices()
                     .fold((0u64, 0u64, 0u64), |acc, (i, c)| {
-                        let priority = self.char_to_priority(c);
+                        let priority = char_to_priority(c);
                         (
                             if i < halfway {
-                                self.set_bit(acc.0, priority)
+                                set_bit(acc.0, priority)
                             } else {
                                 acc.0
                             },
                             if i >= halfway {
-                                self.set_bit(acc.1, priority)
+                                set_bit(acc.1, priority)
                             } else {
                                 acc.1
                             },
-                            self.set_bit(acc.2, priority),
+                            set_bit(acc.2, priority),
                         )
                     });
             all_rucksacks.push(Rucksack {
