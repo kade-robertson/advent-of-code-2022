@@ -25,7 +25,7 @@ impl Problem03 {
         }
     }
 
-    fn set_bit(&self, start: u64, priority: u8) -> u64 {
+    const fn set_bit(&self, start: u64, priority: u8) -> u64 {
         let bit_to_set = 1 << priority;
 
         if start & bit_to_set == 0 {
@@ -41,18 +41,29 @@ impl Problem03 {
         for line in data.lines() {
             let stripped_line = line.trim();
             let halfway = stripped_line.len() / 2;
+            let (first, second, combined) =
+                stripped_line
+                    .char_indices()
+                    .fold((0u64, 0u64, 0u64), |acc, (i, c)| {
+                        let priority = self.char_to_priority(c);
+                        (
+                            if i < halfway {
+                                self.set_bit(acc.0, priority)
+                            } else {
+                                acc.0
+                            },
+                            if i >= halfway {
+                                self.set_bit(acc.1, priority)
+                            } else {
+                                acc.1
+                            },
+                            self.set_bit(acc.2, priority),
+                        )
+                    });
             all_rucksacks.push(Rucksack {
-                first: stripped_line
-                    .chars()
-                    .take(halfway)
-                    .fold(0, |acc, c| self.set_bit(acc, self.char_to_priority(c))),
-                second: stripped_line
-                    .chars()
-                    .skip(halfway)
-                    .fold(0, |acc, c| self.set_bit(acc, self.char_to_priority(c))),
-                combined: stripped_line
-                    .chars()
-                    .fold(0, |acc, c| self.set_bit(acc, self.char_to_priority(c))),
+                first,
+                second,
+                combined,
             })
         }
 
