@@ -66,6 +66,7 @@ impl Problem03 {
             .chunks(3)
             .map(|rs| {
                 *rs.iter()
+                    .skip(1)
                     .fold(rs[0].combined.clone(), |acc, r| {
                         acc.intersection(&r.combined).cloned().collect()
                     })
