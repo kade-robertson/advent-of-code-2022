@@ -1,4 +1,4 @@
-use std::time::Instant;
+use std::{env, time::Instant};
 
 use crate::problem::Problem;
 
@@ -12,6 +12,15 @@ mod util;
 
 fn main() {
     println!("~ Advent of Code 2022 ~");
+
+    let censor_results = env::args().any(|x| x == *"--censor");
+    let do_censoring = |result: i64| {
+        if censor_results {
+            "censored".to_owned()
+        } else {
+            result.to_string()
+        }
+    };
 
     let problems: Vec<Box<dyn Problem>> = vec![
         Box::new(problem_01::Problem01::new()),
@@ -27,14 +36,22 @@ fn main() {
         let part1_result = problem.solve();
         let part1_duration = part1_start.elapsed();
         duration += part1_duration;
-        println!("{} (took {:.2?})", part1_result, part1_duration);
+        println!(
+            "{} (took {:.2?})",
+            do_censoring(part1_result),
+            part1_duration
+        );
 
         print!(" - Part 2: ");
         let part2_start = Instant::now();
         let part2_result = problem.solve_part2();
         let part2_duration = part2_start.elapsed();
         duration += part2_duration;
-        println!("{} (took {:.2?})", part2_result, part2_duration);
+        println!(
+            "{} (took {:.2?})",
+            do_censoring(part2_result),
+            part2_duration
+        );
     });
     println!("Took a total of {:.2?}", duration);
 }
