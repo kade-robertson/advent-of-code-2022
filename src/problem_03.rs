@@ -40,29 +40,27 @@ impl Problem03 {
         for line in data.lines() {
             let stripped_line = line.trim();
             let halfway = stripped_line.len() / 2;
-            let (first, second, combined) =
-                stripped_line
-                    .char_indices()
-                    .fold((0u64, 0u64, 0u64), |acc, (i, c)| {
-                        let priority = char_to_priority(c);
-                        (
-                            if i < halfway {
-                                set_bit(acc.0, priority)
-                            } else {
-                                acc.0
-                            },
-                            if i >= halfway {
-                                set_bit(acc.1, priority)
-                            } else {
-                                acc.1
-                            },
-                            set_bit(acc.2, priority),
-                        )
-                    });
+            let (first, second) = stripped_line
+                .char_indices()
+                .fold((0u64, 0u64), |acc, (i, c)| {
+                    let priority = char_to_priority(c);
+                    (
+                        if i < halfway {
+                            set_bit(acc.0, priority)
+                        } else {
+                            acc.0
+                        },
+                        if i >= halfway {
+                            set_bit(acc.1, priority)
+                        } else {
+                            acc.1
+                        },
+                    )
+                });
             all_rucksacks.push(Rucksack {
                 first,
                 second,
-                combined,
+                combined: first | second,
             })
         }
 
