@@ -1,13 +1,12 @@
-use std::collections::HashSet;
-
 use crate::problem::Problem;
 
 pub struct Problem03 {}
 
+#[derive(Debug)]
 struct Rucksack {
-    first: HashSet<u8>,
-    second: HashSet<u8>,
-    combined: HashSet<u8>,
+    first: u64,
+    second: u64,
+    combined: u64,
 }
 
 impl Problem03 {
@@ -21,8 +20,18 @@ impl Problem03 {
             // subtract 38.
             (c as u8) - 38
         } else {
-            // A-Z starts at index 97, so we subtract 96.
+            // a-z starts at index 97, so we subtract 96.
             (c as u8) - 96
+        }
+    }
+
+    fn set_bit(&self, start: u64, priority: u8) -> u64 {
+        let bit_to_set = 1 << priority;
+
+        if start & bit_to_set == 0 {
+            start + bit_to_set
+        } else {
+            start
         }
     }
 
@@ -33,46 +42,38 @@ impl Problem03 {
             let stripped_line = line.trim();
             let halfway = stripped_line.len() / 2;
             all_rucksacks.push(Rucksack {
-                first: HashSet::from_iter(
-                    stripped_line
-                        .chars()
-                        .take(halfway)
-                        .map(|c| self.char_to_priority(c)),
-                ),
-                second: HashSet::from_iter(
-                    stripped_line
-                        .chars()
-                        .skip(halfway)
-                        .map(|c| self.char_to_priority(c)),
-                ),
-                combined: HashSet::from_iter(
-                    stripped_line.chars().map(|c| self.char_to_priority(c)),
-                ),
+                first: stripped_line
+                    .chars()
+                    .take(halfway)
+                    .fold(0, |acc, c| self.set_bit(acc, self.char_to_priority(c))),
+                second: stripped_line
+                    .chars()
+                    .skip(halfway)
+                    .fold(0, |acc, c| self.set_bit(acc, self.char_to_priority(c))),
+                combined: stripped_line
+                    .chars()
+                    .fold(0, |acc, c| self.set_bit(acc, self.char_to_priority(c))),
             })
         }
 
         all_rucksacks
     }
 
-    fn solve_actual(&self, rucksacks: &[Rucksack]) -> u16 {
+    fn solve_actual(&self, rucksacks: &[Rucksack]) -> u32 {
         rucksacks
             .iter()
-            .map(|r| *r.first.intersection(&r.second).next().unwrap() as u16)
+            .map(|r| (r.first & r.second).trailing_zeros())
             .sum()
     }
 
-    fn solve_actual_part2(&self, rucksacks: &[Rucksack]) -> u16 {
+    fn solve_actual_part2(&self, rucksacks: &[Rucksack]) -> u32 {
         rucksacks
             .chunks(3)
             .map(|rs| {
-                *rs.iter()
+                rs.iter()
                     .skip(1)
-                    .fold(rs[0].combined.clone(), |acc, r| {
-                        acc.intersection(&r.combined).cloned().collect()
-                    })
-                    .iter()
-                    .next()
-                    .unwrap() as u16
+                    .fold(rs[0].combined, |acc, r| acc & r.combined)
+                    .trailing_zeros()
             })
             .sum()
     }
