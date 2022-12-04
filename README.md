@@ -26,16 +26,16 @@ Run on a Ryzen 7 5800X in Pop!\_OS, in release mode. Answers are censored.
 ```
 ~ Advent of Code 2022 ~
 Day 1: Calorie Counting
- - Part 1: censored (took 48.83µs)
- - Part 2: censored (took 50.47µs)
+ - Part 1: censored (took 49.22µs)
+ - Part 2: censored (took 51.04µs)
 Day 2: Rock Paper Scissors
- - Part 1: censored (took 40.19µs)
- - Part 2: censored (took 48.28µs)
+ - Part 1: censored (took 39.46µs)
+ - Part 2: censored (took 50.19µs)
 Day 3: Rucksack Reorganization
- - Part 1: censored (took 43.15µs)
- - Part 2: censored (took 39.80µs)
+ - Part 1: censored (took 42.37µs)
+ - Part 2: censored (took 38.13µs)
 Day 4: Camp Cleanup
- - Part 1: censored (took 66.59µs)
- - Part 2: censored (took 67.21µs)
-Took a total of 404.59µs
+ - Part 1: censored (took 41.07µs)
+ - Part 2: censored (took 41.27µs)
+Took a total of 352.80µs
 ```
