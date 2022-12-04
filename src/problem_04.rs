@@ -8,6 +8,28 @@ struct CleaningPair {
 }
 
 impl CleaningPair {
+    /**
+     * I did attempt to make this a bit faster by avoiding the ugly
+     * .next().unwrap() usage on the iterator by doing this instead. It was
+     * technically faster, but only by about 1µs and the resulting
+     * implementation looked even worse.
+     *
+     * pub fn new(pair_str: &str) -> Self {
+     *     let mut pair = CleaningPair { values: [0; 4] };
+     *
+     *     pair_str
+     *         .trim()
+     *         .split(|c| c == ',' || c == '-')
+     *         .take(4)
+     *         .enumerate()
+     *         .for_each(|(i, n)| {
+     *             pair.values[i] = n.parse::<u8>().unwrap();
+     *         });
+     *
+     *     pair
+     * }
+     */
+
     pub fn self_contained(&self) -> bool {
         (self.first.0 <= self.second.0 && self.first.1 >= self.second.1)
             || (self.second.0 <= self.first.0 && self.second.1 >= self.first.1)
