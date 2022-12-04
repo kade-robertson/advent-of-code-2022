@@ -14,17 +14,11 @@ impl CleaningPair {
     }
 
     pub fn overlapping(&self) -> bool {
-        let x = (self.second.0 <= self.first.0 && self.first.0 <= self.second.1)
+        (self.second.0 <= self.first.0 && self.first.0 <= self.second.1)
             || (self.second.0 <= self.first.1 && self.first.1 <= self.second.1)
             || (self.first.0 <= self.second.0 && self.second.0 <= self.first.1)
-            || (self.first.0 <= self.second.1 && self.second.1 <= self.first.1);
-
-        x
+            || (self.first.0 <= self.second.1 && self.second.1 <= self.first.1)
     }
-}
-
-fn parse_number(iter: &mut core::str::Split<char>) -> u8 {
-    iter.next().unwrap().parse::<u8>().unwrap()
 }
 
 impl Problem04 {
@@ -33,25 +27,19 @@ impl Problem04 {
     }
 
     fn parse(&self, data: &str) -> Vec<CleaningPair> {
-        let mut all_pairs = Vec::new();
-
-        for line in data.lines() {
-            let pair_ranges = line
-                .trim()
-                .split(',')
-                .map(|e| {
-                    let mut range = e.split('-');
-                    (parse_number(&mut range), parse_number(&mut range))
-                })
-                .collect::<Vec<(u8, u8)>>();
-
-            all_pairs.push(CleaningPair {
-                first: pair_ranges[0],
-                second: pair_ranges[1],
-            });
-        }
-
-        all_pairs
+        data.lines()
+            .map(|l| {
+                l.trim()
+                    .split(|c| c == ',' || c == '-')
+                    .take(4)
+                    .map(|n| n.parse::<u8>().unwrap())
+                    .collect::<Vec<u8>>()
+            })
+            .map(|vn| CleaningPair {
+                first: (vn[0], vn[1]),
+                second: (vn[2], vn[3]),
+            })
+            .collect::<Vec<CleaningPair>>()
     }
 
     fn solve_actual(&self, cleaning_pairs: &[CleaningPair]) -> u16 {
