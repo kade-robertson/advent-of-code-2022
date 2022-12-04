@@ -29,15 +29,17 @@ impl Problem04 {
     fn parse(&self, data: &str) -> Vec<CleaningPair> {
         data.lines()
             .map(|l| {
-                l.trim()
+                let range_values = l
+                    .trim()
                     .split(|c| c == ',' || c == '-')
                     .take(4)
                     .map(|n| n.parse::<u8>().unwrap())
-                    .collect::<Vec<u8>>()
-            })
-            .map(|vn| CleaningPair {
-                first: (vn[0], vn[1]),
-                second: (vn[2], vn[3]),
+                    .collect::<Vec<u8>>();
+
+                CleaningPair {
+                    first: (range_values[0], range_values[1]),
+                    second: (range_values[2], range_values[3]),
+                }
             })
             .collect::<Vec<CleaningPair>>()
     }
