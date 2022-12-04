@@ -53,7 +53,7 @@ impl Problem04 {
             .map(|l| {
                 let mut range_values = l
                     .trim()
-                    .split(|c| c == ',' || c == '-')
+                    .split([',', '-'])
                     .take(4)
                     .map(|n| n.parse::<u8>().unwrap());
 
