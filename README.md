@@ -26,20 +26,24 @@ Run on a Ryzen 7 5800X in Pop!\_OS, in release mode. Answers are censored.
 ```
 ~ Advent of Code 2022 ~
 Day 1: Calorie Counting
- - Part 1: censored (took 45.45µs)
- - Part 2: censored (took 42.21µs)
+ - Part 1: censored (took 44.06µs)
+ - Part 2: censored (took 47.51µs)
 Day 2: Rock Paper Scissors
- - Part 1: censored (took 39.93µs)
- - Part 2: censored (took 39.08µs)
+ - Part 1: censored (took 40.40µs)
+ - Part 2: censored (took 51.13µs)
 Day 3: Rucksack Reorganization
  - Part 1: censored (took 43.23µs)
- - Part 2: censored (took 39.04µs)
+ - Part 2: censored (took 39.47µs)
 Day 4: Camp Cleanup
- - Part 1: censored (took 40.46µs)
- - Part 2: censored (took 39.12µs)
+ - Part 1: censored (took 55.55µs)
+ - Part 2: censored (took 41.89µs)
 Day 5: Supply Stacks
- - Part 1: censored (took 121.92µs)
- - Part 2: censored (took 108.35µs)
+ - Part 1: censored (took 125.25µs)
+ - Part 2: censored (took 103.81µs)
+Day 6: Tuning Trouble
+ - Part 1: censored (took 8.68µs)
+ - Part 2: censored (took 22.95µs)
+Took a total of 623.97µs
 ```
 
 Averaged over 10 runs (using `--bench` option):
@@ -47,19 +51,22 @@ Averaged over 10 runs (using `--bench` option):
 ```
 ~ Advent of Code 2022 ~
 Day 1: Calorie Counting
- - Part 1: censored (took 35.88µs)
- - Part 2: censored (took 32.56µs)
+ - Part 1: censored (took 35.56µs)
+ - Part 2: censored (took 36.70µs)
 Day 2: Rock Paper Scissors
- - Part 1: censored (took 37.61µs)
- - Part 2: censored (took 36.01µs)
+ - Part 1: censored (took 37.40µs)
+ - Part 2: censored (took 46.02µs)
 Day 3: Rucksack Reorganization
- - Part 1: censored (took 24.80µs)
- - Part 2: censored (took 17.35µs)
+ - Part 1: censored (took 25.02µs)
+ - Part 2: censored (took 16.95µs)
 Day 4: Camp Cleanup
- - Part 1: censored (took 35.46µs)
- - Part 2: censored (took 34.12µs)
+ - Part 1: censored (took 36.86µs)
+ - Part 2: censored (took 36.52µs)
 Day 5: Supply Stacks
- - Part 1: censored (took 105.76µs)
- - Part 2: censored (took 103.55µs)
-Took a total of 463.10µs
+ - Part 1: censored (took 113.92µs)
+ - Part 2: censored (took 103.77µs)
+Day 6: Tuning Trouble
+ - Part 1: censored (took 6.77µs)
+ - Part 2: censored (took 21.89µs)
+Took a total of 517.37µs
 ```

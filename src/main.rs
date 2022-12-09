@@ -13,6 +13,7 @@ mod problem_02;
 mod problem_03;
 mod problem_04;
 mod problem_05;
+mod problem_06;
 mod util;
 
 fn main() {
@@ -41,6 +42,7 @@ fn main() {
         Box::new(problem_03::Problem03::new()),
         Box::new(problem_04::Problem04::new()),
         Box::new(problem_05::Problem05::new()),
+        Box::new(problem_06::Problem06::new()),
     ];
     let mut duration = Instant::now().elapsed();
     problems.iter().for_each(|problem| {
@@ -69,7 +71,7 @@ fn main() {
         print!(" - Part 2: ");
         for _ in 0..iterations {
             let part2_start = Instant::now();
-            part2_result = problem.solve();
+            part2_result = problem.solve_part2();
             let part2_duration = part2_start.elapsed();
             duration += part2_duration;
             part2_total += part2_duration;
