@@ -82,16 +82,16 @@ impl Problem for Problem04 {
         "Day 4: Camp Cleanup"
     }
 
-    fn solve(&self) -> i64 {
+    fn solve(&self) -> String {
         let data = get_input!("./inputs/problem_04.txt");
         let cleaning_pairs = self.parse(&data);
-        self.solve_actual(&cleaning_pairs).into()
+        self.solve_actual(&cleaning_pairs).to_string()
     }
 
-    fn solve_part2(&self) -> i64 {
+    fn solve_part2(&self) -> String {
         let data = get_input!("./inputs/problem_04.txt");
         let cleaning_pairs = self.parse(&data);
-        self.solve_actual_part2(&cleaning_pairs).into()
+        self.solve_actual_part2(&cleaning_pairs).to_string()
     }
 }
 

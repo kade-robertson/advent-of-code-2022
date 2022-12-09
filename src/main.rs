@@ -9,6 +9,7 @@ mod problem_01;
 mod problem_02;
 mod problem_03;
 mod problem_04;
+mod problem_05;
 mod util;
 
 fn main() {
@@ -22,12 +23,20 @@ fn main() {
             result.to_string()
         }
     };
+    let do_censoring_str = |result: String| {
+        if censor_results {
+            "censored".to_owned()
+        } else {
+            result
+        }
+    };
 
     let problems: Vec<Box<dyn Problem>> = vec![
         Box::new(problem_01::Problem01::new()),
         Box::new(problem_02::Problem02::new()),
         Box::new(problem_03::Problem03::new()),
         Box::new(problem_04::Problem04::new()),
+        Box::new(problem_05::Problem05::new()),
     ];
     let mut duration = Instant::now().elapsed();
     problems.iter().for_each(|problem| {
@@ -40,7 +49,7 @@ fn main() {
         duration += part1_duration;
         println!(
             "{} (took {:.2?})",
-            do_censoring(part1_result),
+            do_censoring_str(part1_result),
             part1_duration
         );
 
@@ -51,7 +60,7 @@ fn main() {
         duration += part2_duration;
         println!(
             "{} (took {:.2?})",
-            do_censoring(part2_result),
+            do_censoring_str(part2_result),
             part2_duration
         );
     });

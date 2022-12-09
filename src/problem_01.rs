@@ -43,16 +43,16 @@ impl Problem for Problem01 {
         "Day 1: Calorie Counting"
     }
 
-    fn solve(&self) -> i64 {
+    fn solve(&self) -> String {
         let data = get_input!("./inputs/problem_01.txt");
         let calorie_counts = self.parse(&data);
-        self.solve_actual(&calorie_counts).into()
+        self.solve_actual(&calorie_counts).to_string()
     }
 
-    fn solve_part2(&self) -> i64 {
+    fn solve_part2(&self) -> String {
         let data = get_input!("./inputs/problem_01.txt");
         let calorie_counts = self.parse(&data);
-        self.solve_actual_part2(&calorie_counts).into()
+        self.solve_actual_part2(&calorie_counts).to_string()
     }
 }
 

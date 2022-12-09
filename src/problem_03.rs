@@ -92,16 +92,16 @@ impl Problem for Problem03 {
         "Day 3: Rucksack Reorganization"
     }
 
-    fn solve(&self) -> i64 {
+    fn solve(&self) -> String {
         let data = get_input!("./inputs/problem_03.txt");
         let rucksacks = self.parse(&data);
-        self.solve_actual(&rucksacks).into()
+        self.solve_actual(&rucksacks).to_string()
     }
 
-    fn solve_part2(&self) -> i64 {
+    fn solve_part2(&self) -> String {
         let data = get_input!("./inputs/problem_03.txt");
         let rucksacks = self.parse(&data);
-        self.solve_actual_part2(&rucksacks).into()
+        self.solve_actual_part2(&rucksacks).to_string()
     }
 }
 

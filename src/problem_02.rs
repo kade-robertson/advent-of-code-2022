@@ -100,16 +100,16 @@ impl Problem for Problem02 {
         "Day 2: Rock Paper Scissors"
     }
 
-    fn solve(&self) -> i64 {
+    fn solve(&self) -> String {
         let data = get_input!("./inputs/problem_02.txt");
         let rps_games = self.parse(&data);
-        self.solve_actual(&rps_games).into()
+        self.solve_actual(&rps_games).to_string()
     }
 
-    fn solve_part2(&self) -> i64 {
+    fn solve_part2(&self) -> String {
         let data = get_input!("./inputs/problem_02.txt");
         let rps_games = self.parse_part2(&data);
-        self.solve_actual(&rps_games).into()
+        self.solve_actual(&rps_games).to_string()
     }
 }
 
