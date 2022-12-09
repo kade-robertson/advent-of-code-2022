@@ -1,6 +1,6 @@
 use std::{env, time::Instant};
 
-use crate::problem::Problem;
+use crate::problem::{Problem, Solution};
 
 #[macro_use]
 mod macros;
@@ -16,18 +16,16 @@ fn main() {
     println!("~ Advent of Code 2022 ~");
 
     let censor_results = env::args().any(|x| x == *"--censor");
-    let do_censoring = |result: i64| {
+    let do_censoring = |result: Solution| {
         if censor_results {
             "censored".to_owned()
         } else {
-            result.to_string()
-        }
-    };
-    let do_censoring_str = |result: String| {
-        if censor_results {
-            "censored".to_owned()
-        } else {
-            result
+            match result {
+                Solution::U64(v) => v.to_string(),
+                Solution::U32(v) => v.to_string(),
+                Solution::U16(v) => v.to_string(),
+                Solution::Str(v) => v,
+            }
         }
     };
 
@@ -49,7 +47,7 @@ fn main() {
         duration += part1_duration;
         println!(
             "{} (took {:.2?})",
-            do_censoring_str(part1_result),
+            do_censoring(part1_result),
             part1_duration
         );
 
@@ -60,7 +58,7 @@ fn main() {
         duration += part2_duration;
         println!(
             "{} (took {:.2?})",
-            do_censoring_str(part2_result),
+            do_censoring(part2_result),
             part2_duration
         );
     });

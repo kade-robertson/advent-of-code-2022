@@ -1,4 +1,4 @@
-use crate::problem::Problem;
+use crate::problem::{Problem, Solution};
 
 pub struct Problem01 {}
 
@@ -43,16 +43,16 @@ impl Problem for Problem01 {
         "Day 1: Calorie Counting"
     }
 
-    fn solve(&self) -> String {
+    fn solve(&self) -> Solution {
         let data = get_input!("./inputs/problem_01.txt");
         let calorie_counts = self.parse(&data);
-        self.solve_actual(&calorie_counts).to_string()
+        Solution::U32(self.solve_actual(&calorie_counts))
     }
 
-    fn solve_part2(&self) -> String {
+    fn solve_part2(&self) -> Solution {
         let data = get_input!("./inputs/problem_01.txt");
         let calorie_counts = self.parse(&data);
-        self.solve_actual_part2(&calorie_counts).to_string()
+        Solution::U32(self.solve_actual_part2(&calorie_counts))
     }
 }
 

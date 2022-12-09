@@ -1,4 +1,4 @@
-use crate::problem::Problem;
+use crate::problem::{Problem, Solution};
 
 pub struct Problem02 {}
 
@@ -100,16 +100,16 @@ impl Problem for Problem02 {
         "Day 2: Rock Paper Scissors"
     }
 
-    fn solve(&self) -> String {
+    fn solve(&self) -> Solution {
         let data = get_input!("./inputs/problem_02.txt");
         let rps_games = self.parse(&data);
-        self.solve_actual(&rps_games).to_string()
+        Solution::U16(self.solve_actual(&rps_games))
     }
 
-    fn solve_part2(&self) -> String {
+    fn solve_part2(&self) -> Solution {
         let data = get_input!("./inputs/problem_02.txt");
         let rps_games = self.parse_part2(&data);
-        self.solve_actual(&rps_games).to_string()
+        Solution::U16(self.solve_actual(&rps_games))
     }
 }
 

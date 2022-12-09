@@ -1,6 +1,6 @@
 use std::collections::VecDeque;
 
-use crate::problem::Problem;
+use crate::problem::{Problem, Solution};
 
 pub struct Problem05 {}
 
@@ -169,16 +169,16 @@ impl Problem for Problem05 {
         "Day 5: Supply Stacks"
     }
 
-    fn solve(&self) -> String {
+    fn solve(&self) -> Solution {
         let data = get_input!("./inputs/problem_05.txt");
         let mut crane_state = self.parse(&data);
-        self.solve_actual(&mut crane_state)
+        Solution::Str(self.solve_actual(&mut crane_state))
     }
 
-    fn solve_part2(&self) -> String {
+    fn solve_part2(&self) -> Solution {
         let data = get_input!("./inputs/problem_05.txt");
         let mut crane_state = self.parse(&data);
-        self.solve_actual_part2(&mut crane_state)
+        Solution::Str(self.solve_actual_part2(&mut crane_state))
     }
 }
 
