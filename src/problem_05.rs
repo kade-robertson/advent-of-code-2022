@@ -46,8 +46,8 @@ impl CraneGame {
             .get_mut(from_col - 1)
             .context("From column does not exist")?;
 
-        let crates_to_move: Vec<char> = if pick_multiple {
-            column_from.drain((column_from.len() - amount)..).collect()
+        let crates_to_move: VecDeque<char> = if pick_multiple {
+            column_from.split_off(column_from.len() - amount)
         } else {
             column_from
                 .drain((column_from.len() - amount)..)
