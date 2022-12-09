@@ -174,4 +174,24 @@ move 1 from 1 to 2",
             .unwrap();
         assert_eq!(crane_game.get_top_crates().unwrap(), "CMZ".to_string());
     }
+
+    #[test]
+    fn test_solve_actual_part2_from_example() {
+        let problem = Problem05::new();
+        let crane_game = problem
+            .parse(
+                "    [D]    
+[N] [C]    
+[Z] [M] [P]
+ 1   2   3 
+
+move 1 from 2 to 1
+move 3 from 1 to 3
+move 2 from 2 to 1
+move 1 from 1 to 2",
+                true,
+            )
+            .unwrap();
+        assert_eq!(crane_game.get_top_crates().unwrap(), "MCD".to_string());
+    }
 }
