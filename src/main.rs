@@ -1,4 +1,7 @@
-use std::{env, time::Instant};
+use std::{
+    env,
+    time::{Duration, Instant},
+};
 
 use crate::problem::{Problem, Solution};
 
@@ -16,6 +19,9 @@ fn main() {
     println!("~ Advent of Code 2022 ~");
 
     let censor_results = env::args().any(|x| x == *"--censor");
+    let do_benchmarking = env::args().any(|x| x == *"--bench");
+    let iterations = if do_benchmarking { 10 } else { 1 };
+
     let do_censoring = |result: Solution| {
         if censor_results {
             "censored".to_owned()
@@ -40,27 +46,39 @@ fn main() {
     problems.iter().for_each(|problem| {
         println!("{}", problem.name());
 
+        let mut part1_total = Duration::ZERO;
+        let mut part1_result = Solution::Str("N/A".to_string());
+
         print!(" - Part 1: ");
-        let part1_start = Instant::now();
-        let part1_result = problem.solve();
-        let part1_duration = part1_start.elapsed();
-        duration += part1_duration;
+        for _ in 0..iterations {
+            let part1_start = Instant::now();
+            part1_result = problem.solve();
+            let part1_duration = part1_start.elapsed();
+            duration += part1_duration;
+            part1_total += part1_duration;
+        }
         println!(
             "{} (took {:.2?})",
             do_censoring(part1_result),
-            part1_duration
+            part1_total / iterations
         );
 
+        let mut part2_total = Duration::ZERO;
+        let mut part2_result = Solution::Str("N/A".to_string());
+
         print!(" - Part 2: ");
-        let part2_start = Instant::now();
-        let part2_result = problem.solve_part2();
-        let part2_duration = part2_start.elapsed();
-        duration += part2_duration;
+        for _ in 0..iterations {
+            let part2_start = Instant::now();
+            part2_result = problem.solve();
+            let part2_duration = part2_start.elapsed();
+            duration += part2_duration;
+            part2_total += part2_duration;
+        }
         println!(
             "{} (took {:.2?})",
             do_censoring(part2_result),
-            part2_duration
+            part2_total / iterations
         );
     });
-    println!("Took a total of {:.2?}", duration);
+    println!("Took a total of {:.2?}", duration / iterations);
 }
