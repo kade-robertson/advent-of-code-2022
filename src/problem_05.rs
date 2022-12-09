@@ -1,4 +1,4 @@
-use std::{cell::RefCell, collections::VecDeque};
+use std::collections::VecDeque;
 
 use anyhow::{Context, Result};
 
@@ -15,19 +15,18 @@ enum ParseState {
 
 #[derive(Debug)]
 struct CraneGame {
-    crate_columns: RefCell<Vec<VecDeque<char>>>,
+    crate_columns: Vec<VecDeque<char>>,
 }
 
 impl CraneGame {
     fn new() -> Self {
         Self {
-            crate_columns: RefCell::new(vec![VecDeque::new(); 10]),
+            crate_columns: vec![VecDeque::new(); 10],
         }
     }
 
-    fn add_crate(&self, column: usize, crate_name: char) -> Result<()> {
+    fn add_crate(&mut self, column: usize, crate_name: char) -> Result<()> {
         self.crate_columns
-            .try_borrow_mut()?
             .get_mut(column)
             .context("Column missing")?
             .push_front(crate_name);
@@ -36,15 +35,14 @@ impl CraneGame {
     }
 
     fn process_instruction(
-        &self,
+        &mut self,
         amount: usize,
         from_col: usize,
         to_col: usize,
         pick_multiple: bool,
     ) -> Result<()> {
-        let mut all_columns = self.crate_columns.try_borrow_mut()?;
-
-        let column_from = all_columns
+        let column_from = self
+            .crate_columns
             .get_mut(from_col - 1)
             .context("From column does not exist")?;
 
@@ -57,7 +55,8 @@ impl CraneGame {
                 .collect()
         };
 
-        let column_to = all_columns
+        let column_to = self
+            .crate_columns
             .get_mut(to_col - 1)
             .context("To column does not exist")?;
 
@@ -70,7 +69,6 @@ impl CraneGame {
         let mut result = String::from("");
 
         self.crate_columns
-            .try_borrow()?
             .iter()
             .filter(|col| !col.is_empty())
             .for_each(|col| result.push(*col.back().expect("No item in column")));
@@ -86,7 +84,7 @@ impl Problem05 {
 
     fn parse(&self, data: &str, pick_multiple: bool) -> Result<CraneGame> {
         let mut state = ParseState::LookingForCrates;
-        let crane_game = CraneGame::new();
+        let mut crane_game = CraneGame::new();
 
         for line in data.lines() {
             let mut column = 0;
