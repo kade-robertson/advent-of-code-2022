@@ -1,4 +1,6 @@
-use std::collections::VecDeque;
+use std::{cell::RefCell, collections::VecDeque};
+
+use anyhow::{Context, Result};
 
 use crate::problem::{Problem, Solution};
 
@@ -12,70 +14,68 @@ enum ParseState {
 }
 
 #[derive(Debug)]
-struct CraneInstruction {
-    amount: u8,
-    from: usize,
-    to: usize,
+struct CraneGame {
+    crate_columns: RefCell<Vec<VecDeque<char>>>,
 }
 
-#[derive(Debug)]
-struct CraneState {
-    crate_columns: Vec<VecDeque<char>>,
-    instructions: VecDeque<CraneInstruction>,
-}
-
-impl CraneState {
-    fn process_instruction(&mut self) {
-        let instruction = self.instructions.pop_front().expect("No more instructions");
-        for _ in 0..instruction.amount {
-            let crate_to_move = self
-                .crate_columns
-                .get_mut(instruction.from - 1)
-                .expect("Tried to pull crate from nonexistent column")
-                .pop_back()
-                .expect("No crate to pull from column");
-            self.crate_columns
-                .get_mut(instruction.to - 1)
-                .expect("Tried to add crate to nonexistent column")
-                .push_back(crate_to_move);
+impl CraneGame {
+    fn new() -> Self {
+        Self {
+            crate_columns: RefCell::new(vec![VecDeque::new(); 10]),
         }
     }
 
-    fn process_instruction_part2(&mut self) {
-        let instruction = self.instructions.pop_front().expect("No more instructions");
-        let from_column = self
-            .crate_columns
-            .get_mut(instruction.from - 1)
-            .expect("Tried to pull crate from nonexistent column");
-        let mut crate_to_move =
-            from_column.split_off(from_column.len() - instruction.amount as usize);
+    fn add_crate(&self, column: usize, crate_name: char) -> Result<()> {
         self.crate_columns
-            .get_mut(instruction.to - 1)
-            .expect("Tried to add crate to nonexistent column")
-            .append(&mut crate_to_move);
+            .try_borrow_mut()?
+            .get_mut(column)
+            .context("Column missing")?
+            .push_front(crate_name);
+
+        Ok(())
     }
 
-    fn process(&mut self) {
-        while !self.instructions.is_empty() {
-            self.process_instruction();
-        }
+    fn process_instruction(
+        &self,
+        amount: usize,
+        from_col: usize,
+        to_col: usize,
+        pick_multiple: bool,
+    ) -> Result<()> {
+        let mut all_columns = self.crate_columns.try_borrow_mut()?;
+
+        let column_from = all_columns
+            .get_mut(from_col - 1)
+            .context("From column does not exist")?;
+
+        let crates_to_move: Vec<char> = if pick_multiple {
+            column_from.drain((column_from.len() - amount)..).collect()
+        } else {
+            column_from
+                .drain((column_from.len() - amount)..)
+                .rev()
+                .collect()
+        };
+
+        let column_to = all_columns
+            .get_mut(to_col - 1)
+            .context("To column does not exist")?;
+
+        column_to.extend(crates_to_move);
+
+        Ok(())
     }
 
-    fn process_part2(&mut self) {
-        while !self.instructions.is_empty() {
-            self.process_instruction_part2();
-        }
-    }
-
-    fn get_top_crates(&self) -> String {
+    fn get_top_crates(&self) -> Result<String> {
         let mut result = String::from("");
 
         self.crate_columns
+            .try_borrow()?
             .iter()
             .filter(|col| !col.is_empty())
             .for_each(|col| result.push(*col.back().expect("No item in column")));
 
-        result
+        Ok(result)
     }
 }
 
@@ -84,13 +84,9 @@ impl Problem05 {
         Problem05 {}
     }
 
-    fn parse(&self, data: &str) -> CraneState {
+    fn parse(&self, data: &str, pick_multiple: bool) -> Result<CraneGame> {
         let mut state = ParseState::LookingForCrates;
-        let mut crate_columns: Vec<VecDeque<char>> = Vec::with_capacity(10);
-        let mut instructions: VecDeque<CraneInstruction> = VecDeque::new();
-        for _ in 0..10 {
-            crate_columns.push(VecDeque::new());
-        }
+        let crane_game = CraneGame::new();
 
         for line in data.lines() {
             let mut column = 0;
@@ -111,56 +107,23 @@ impl Problem05 {
                 while let Some(ch) = line_chars.get(idx) {
                     if ch == &'[' {
                         let new_crate = line_chars.get(idx + 1).expect("Missing crate identifier");
-                        crate_columns
-                            .get_mut(column)
-                            .expect("Column not present")
-                            .push_front(*new_crate);
+                        crane_game.add_crate(column, *new_crate)?;
                     }
                     column += 1;
                     idx += 4;
                 }
             } else if state == ParseState::ReadingMoves {
                 let words = line.split(' ').collect::<Vec<_>>();
-                instructions.push_back(CraneInstruction {
-                    amount: words
-                        .get(1)
-                        .expect("Could not find amount")
-                        .parse()
-                        .expect("Could not parse amount"),
-                    from: words
-                        .get(3)
-                        .expect("Could not find from")
-                        .parse()
-                        .expect("Could not parse from"),
-                    to: words
-                        .get(5)
-                        .expect("Could not find to")
-                        .parse()
-                        .expect("Could not parse to"),
-                })
+                crane_game.process_instruction(
+                    words.get(1).context("Could not find amount")?.parse()?,
+                    words.get(3).context("Could not find from")?.parse()?,
+                    words.get(5).context("Could not find to")?.parse()?,
+                    pick_multiple,
+                )?;
             }
         }
 
-        crate_columns = crate_columns
-            .iter()
-            .cloned()
-            .filter(|v| !v.is_empty())
-            .collect::<Vec<_>>();
-
-        CraneState {
-            crate_columns,
-            instructions,
-        }
-    }
-
-    fn solve_actual(&self, crane_state: &mut CraneState) -> String {
-        crane_state.process();
-        crane_state.get_top_crates()
-    }
-
-    fn solve_actual_part2(&self, crane_state: &mut CraneState) -> String {
-        crane_state.process_part2();
-        crane_state.get_top_crates()
+        Ok(crane_game)
     }
 }
 
@@ -171,14 +134,22 @@ impl Problem for Problem05 {
 
     fn solve(&self) -> Solution {
         let data = get_input!("./inputs/problem_05.txt");
-        let mut crane_state = self.parse(&data);
-        Solution::Str(self.solve_actual(&mut crane_state))
+        let crane_game = self.parse(&data, false).unwrap();
+        Solution::Str(
+            crane_game
+                .get_top_crates()
+                .unwrap_or_else(|_| "failed".into()),
+        )
     }
 
     fn solve_part2(&self) -> Solution {
         let data = get_input!("./inputs/problem_05.txt");
-        let mut crane_state = self.parse(&data);
-        Solution::Str(self.solve_actual_part2(&mut crane_state))
+        let crane_game = self.parse(&data, true).unwrap();
+        Solution::Str(
+            crane_game
+                .get_top_crates()
+                .unwrap_or_else(|_| "failed".into()),
+        )
     }
 }
 
@@ -189,8 +160,9 @@ mod tests {
     #[test]
     fn test_solve_actual_from_example() {
         let problem = Problem05::new();
-        let mut data = problem.parse(
-            "    [D]    
+        let crane_game = problem
+            .parse(
+                "    [D]    
 [N] [C]    
 [Z] [M] [P]
  1   2   3 
@@ -199,7 +171,9 @@ move 1 from 2 to 1
 move 3 from 1 to 3
 move 2 from 2 to 1
 move 1 from 1 to 2",
-        );
-        assert_eq!(problem.solve_actual(&mut data), "CMZ".to_string());
+                false,
+            )
+            .unwrap();
+        assert_eq!(crane_game.get_top_crates().unwrap(), "CMZ".to_string());
     }
 }
