@@ -7,34 +7,29 @@ impl Problem01 {
         Problem01 {}
     }
 
-    fn parse(&self, data: &str) -> Vec<Vec<u32>> {
+    fn parse(&self, data: &str) -> Vec<u32> {
         let mut all_callories = Vec::new();
-        let mut current_calories: Vec<u32> = Vec::new();
+        let mut current_calories = 0;
 
         for line in data.lines() {
             if line.is_empty() {
                 all_callories.push(current_calories);
-                current_calories = Vec::new();
+                current_calories = 0;
             } else {
-                current_calories.push(line.parse::<u32>().unwrap());
+                current_calories += line.parse::<u32>().unwrap();
             }
         }
 
         all_callories
     }
 
-    fn solve_actual(&self, calorie_counts: &[Vec<u32>]) -> u32 {
-        calorie_counts.iter().map(|c| c.iter().sum()).max().unwrap()
+    fn solve_actual(&self, calorie_counts: &[u32]) -> u32 {
+        *calorie_counts.iter().max().unwrap()
     }
 
-    fn solve_actual_part2(&self, calorie_counts: &[Vec<u32>]) -> u32 {
-        let mut total_counts = calorie_counts
-            .iter()
-            .map(|c| c.iter().sum())
-            .collect::<Vec<u32>>();
-        total_counts.sort();
-
-        total_counts.iter().rev().take(3).sum()
+    fn solve_actual_part2(&self, calorie_counts: &mut [u32]) -> u32 {
+        calorie_counts.sort();
+        calorie_counts.iter().rev().take(3).sum()
     }
 }
 
@@ -51,8 +46,8 @@ impl Problem for Problem01 {
 
     fn solve_part2(&self) -> Solution {
         let data = get_input!("./inputs/problem_01.txt");
-        let calorie_counts = self.parse(&data);
-        Solution::U32(self.solve_actual_part2(&calorie_counts))
+        let mut calorie_counts = self.parse(&data);
+        Solution::U32(self.solve_actual_part2(&mut calorie_counts))
     }
 }
 
@@ -62,27 +57,33 @@ mod tests {
 
     #[test]
     fn test_solve_actual_from_example() {
-        let data: Vec<Vec<u32>> = vec![
+        let data: Vec<u32> = vec![
             vec![1000, 2000, 3000],
             vec![4000],
             vec![5000, 6000],
             vec![7000, 8000, 9000],
             vec![10000],
-        ];
+        ]
+        .iter()
+        .map(|c| c.iter().sum())
+        .collect::<Vec<_>>();
         let problem = Problem01::new();
         assert_eq!(problem.solve_actual(&data), 24000);
     }
 
     #[test]
     fn test_solve_actual_part2_from_example() {
-        let data: Vec<Vec<u32>> = vec![
+        let mut data: Vec<u32> = vec![
             vec![1000, 2000, 3000],
             vec![4000],
             vec![5000, 6000],
             vec![7000, 8000, 9000],
             vec![10000],
-        ];
+        ]
+        .iter()
+        .map(|c| c.iter().sum())
+        .collect::<Vec<_>>();
         let problem = Problem01::new();
-        assert_eq!(problem.solve_actual_part2(&data), 45000);
+        assert_eq!(problem.solve_actual_part2(&mut data), 45000);
     }
 }
