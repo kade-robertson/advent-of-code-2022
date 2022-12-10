@@ -114,12 +114,6 @@ impl Filesystem {
     }
 }
 
-#[derive(PartialEq, Eq)]
-enum ParseState {
-    CommandMode,
-    FileMode,
-}
-
 pub struct Problem07 {}
 
 impl Problem07 {
@@ -128,19 +122,15 @@ impl Problem07 {
     }
 
     fn parse(&self, data: &str) -> Filesystem {
-        let mut state = ParseState::CommandMode;
         let mut fs = Filesystem::new();
         fs.init();
 
         data.lines().for_each(|l| {
             if l.starts_with("$ cd") {
-                state = ParseState::CommandMode;
                 fs.chdir(&l[5..]).unwrap()
-            } else if l.starts_with("$ ls") {
-                state = ParseState::FileMode;
             } else if l.starts_with("dir") {
                 fs.mkdir(&l[4..]).unwrap();
-            } else {
+            } else if l.starts_with(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) {
                 let mut file_split = l.split(' ');
                 fs.mkfile(file_split.next().unwrap().parse::<u64>().unwrap())
                     .unwrap();
