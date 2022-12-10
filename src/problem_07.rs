@@ -130,7 +130,7 @@ impl Problem07 {
                 fs.chdir(&l[5..]).unwrap()
             } else if l.starts_with("dir") {
                 fs.mkdir(&l[4..]).unwrap();
-            } else if l.starts_with(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) {
+            } else if l.starts_with(|c: char| c.is_numeric()) {
                 let mut file_split = l.split(' ');
                 fs.mkfile(file_split.next().unwrap().parse::<u64>().unwrap())
                     .unwrap();
