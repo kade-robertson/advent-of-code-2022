@@ -32,7 +32,7 @@ impl KnotSimulator {
                 let current = self.knot_points.get_mut(i).unwrap();
                 let xdelta = previous.0 - current.0;
                 let ydelta = previous.1 - current.1;
-                if xdelta < 1 && ydelta < 1 {
+                if (-1..=1).contains(&xdelta) && (-1..=1).contains(&ydelta) {
                     continue;
                 }
 
