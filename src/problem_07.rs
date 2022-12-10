@@ -162,12 +162,13 @@ impl Problem07 {
 
     fn solve_actual_part2(&self, filesystem: &Filesystem) -> u64 {
         let root_directory = filesystem.root.borrow();
-        let space_remaining = 70_000_000 - root_directory.dir_size();
+        let root_size = root_directory.dir_size();
+        let space_remaining = 70_000_000 - root_size;
         let space_to_free = 30_000_000 - space_remaining;
         let mut dirs_to_walk: VecDeque<Rc<RefCell<Directory>>> =
             VecDeque::from_iter(root_directory.directories.values().map(Rc::clone));
 
-        let mut candidates: Vec<(u64, Rc<RefCell<Directory>>)> = vec![];
+        let mut smallest_candidate = root_size;
 
         while let Some(dir) = dirs_to_walk.pop_front() {
             let dir_ref = dir.borrow();
@@ -176,14 +177,14 @@ impl Problem07 {
             // Only directories that are already large enough to be candidates
             // can possibly have children that are also candidates.
             if dir_size >= space_to_free {
-                candidates.push((dir_size, Rc::clone(&dir)));
+                if dir_size <= smallest_candidate {
+                    smallest_candidate = dir_size;
+                }
                 dirs_to_walk.extend(dir_ref.directories.values().map(Rc::clone));
             }
         }
 
-        candidates.sort_by(|a, b| a.0.cmp(&b.0));
-
-        candidates[0].0
+        smallest_candidate
     }
 }
 
