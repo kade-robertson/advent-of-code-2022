@@ -8,19 +8,14 @@ use anyhow::{anyhow, Context, Result};
 
 use crate::problem::{Problem, Solution};
 
-struct File {
-    size: u64,
-}
-
 struct Directory {
     parent: Option<Weak<RefCell<Directory>>>,
-    files: HashMap<String, File>,
+    file_size: u64,
     directories: HashMap<String, Rc<RefCell<Directory>>>,
 }
 
 impl Directory {
     pub fn dir_size(&self) -> u64 {
-        let file_size = self.files.values().map(|f| f.size).sum::<u64>();
         let subdirectory_size = self
             .directories
             .values()
@@ -33,7 +28,7 @@ impl Directory {
             })
             .sum::<u64>();
 
-        file_size + subdirectory_size
+        self.file_size + subdirectory_size
     }
 }
 
@@ -46,7 +41,7 @@ impl Filesystem {
     pub fn new() -> Self {
         let root_directory = Rc::new(RefCell::new(Directory {
             parent: None,
-            files: HashMap::new(),
+            file_size: 0,
             directories: HashMap::new(),
         }));
         Self {
@@ -62,7 +57,7 @@ impl Filesystem {
     pub fn mkdir(&self, name: &str) -> Result<()> {
         let new_directory = Rc::new(RefCell::new(Directory {
             parent: Some(Weak::clone(&self.current_directory)),
-            files: HashMap::new(),
+            file_size: 0,
             directories: HashMap::new(),
         }));
 
@@ -108,13 +103,12 @@ impl Filesystem {
         }
     }
 
-    pub fn mkfile(&mut self, size: u64, name: &str) -> Result<()> {
+    pub fn mkfile(&mut self, size: u64) -> Result<()> {
         self.current_directory
             .upgrade()
             .context("Could not access current directory")?
             .try_borrow_mut()?
-            .files
-            .insert(name.to_owned(), File { size });
+            .file_size += size;
 
         Ok(())
     }
@@ -148,11 +142,8 @@ impl Problem07 {
                 fs.mkdir(&l[4..]).unwrap();
             } else {
                 let mut file_split = l.split(' ');
-                fs.mkfile(
-                    file_split.next().unwrap().parse::<u64>().unwrap(),
-                    file_split.next().unwrap(),
-                )
-                .unwrap();
+                fs.mkfile(file_split.next().unwrap().parse::<u64>().unwrap())
+                    .unwrap();
             }
         });
 
