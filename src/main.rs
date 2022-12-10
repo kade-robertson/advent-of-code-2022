@@ -16,6 +16,7 @@ mod problem_05;
 mod problem_06;
 mod problem_07;
 mod problem_08;
+mod problem_09;
 mod util;
 
 fn main() {
@@ -33,6 +34,7 @@ fn main() {
                 Solution::U64(v) => v.to_string(),
                 Solution::U32(v) => v.to_string(),
                 Solution::U16(v) => v.to_string(),
+                Solution::USize(v) => v.to_string(),
                 Solution::Str(v) => v,
             }
         }
@@ -47,6 +49,7 @@ fn main() {
         Box::new(problem_06::Problem06::new()),
         Box::new(problem_07::Problem07::new()),
         Box::new(problem_08::Problem08::new()),
+        Box::new(problem_09::Problem09::new()),
     ];
     let mut duration = Instant::now().elapsed();
     problems.iter().for_each(|problem| {

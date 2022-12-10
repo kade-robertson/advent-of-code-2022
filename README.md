@@ -26,30 +26,33 @@ Run on a Ryzen 7 5800X in Pop!\_OS, in release mode. Answers are censored.
 ```
 ~ Advent of Code 2022 ~
 Day 1: Calorie Counting
- - Part 1: censored (took 23.05µs)
- - Part 2: censored (took 24.48µs)
+ - Part 1: censored (took 23.42µs)
+ - Part 2: censored (took 23.74µs)
 Day 2: Rock Paper Scissors
- - Part 1: censored (took 40.69µs)
- - Part 2: censored (took 55.75µs)
+ - Part 1: censored (took 39.70µs)
+ - Part 2: censored (took 47.01µs)
 Day 3: Rucksack Reorganization
- - Part 1: censored (took 46.03µs)
- - Part 2: censored (took 39.32µs)
+ - Part 1: censored (took 44.72µs)
+ - Part 2: censored (took 38.63µs)
 Day 4: Camp Cleanup
- - Part 1: censored (took 40.86µs)
- - Part 2: censored (took 40.85µs)
+ - Part 1: censored (took 41.57µs)
+ - Part 2: censored (took 41.25µs)
 Day 5: Supply Stacks
- - Part 1: censored (took 122.01µs)
- - Part 2: censored (took 112.86µs)
+ - Part 1: censored (took 124.11µs)
+ - Part 2: censored (took 116.11µs)
 Day 6: Tuning Trouble
- - Part 1: censored (took 8.50µs)
- - Part 2: censored (took 22.07µs)
+ - Part 1: censored (took 8.97µs)
+ - Part 2: censored (took 22.05µs)
 Day 7: No Space Left On Device
- - Part 1: censored (took 59.76µs)
- - Part 2: censored (took 56.16µs)
+ - Part 1: censored (took 60.36µs)
+ - Part 2: censored (took 55.26µs)
 Day 8: Treetop Tree House
- - Part 1: censored (took 273.86µs)
- - Part 2: censored (took 223.18µs)
-Took a total of 1.19ms
+ - Part 1: censored (took 271.98µs)
+ - Part 2: censored (took 223.53µs)
+Day 9: Rope Bridge
+ - Part 1: censored (took 359.42µs)
+ - Part 2: censored (took 598.99µs)
+Took a total of 2.14ms
 ```
 
 Averaged over 10 runs (using `--bench` option):
@@ -57,28 +60,31 @@ Averaged over 10 runs (using `--bench` option):
 ```
 ~ Advent of Code 2022 ~
 Day 1: Calorie Counting
- - Part 1: censored (took 18.36µs)
- - Part 2: censored (took 21.47µs)
+ - Part 1: censored (took 18.08µs)
+ - Part 2: censored (took 21.22µs)
 Day 2: Rock Paper Scissors
- - Part 1: censored (took 36.78µs)
- - Part 2: censored (took 43.52µs)
+ - Part 1: censored (took 36.91µs)
+ - Part 2: censored (took 42.25µs)
 Day 3: Rucksack Reorganization
- - Part 1: censored (took 25.29µs)
- - Part 2: censored (took 17.05µs)
+ - Part 1: censored (took 25.71µs)
+ - Part 2: censored (took 17.43µs)
 Day 4: Camp Cleanup
- - Part 1: censored (took 36.31µs)
- - Part 2: censored (took 36.00µs)
+ - Part 1: censored (took 36.93µs)
+ - Part 2: censored (took 36.41µs)
 Day 5: Supply Stacks
- - Part 1: censored (took 109.43µs)
- - Part 2: censored (took 95.70µs)
+ - Part 1: censored (took 104.20µs)
+ - Part 2: censored (took 97.09µs)
 Day 6: Tuning Trouble
- - Part 1: censored (took 6.79µs)
- - Part 2: censored (took 21.86µs)
+ - Part 1: censored (took 6.76µs)
+ - Part 2: censored (took 21.87µs)
 Day 7: No Space Left On Device
- - Part 1: censored (took 57.55µs)
- - Part 2: censored (took 48.39µs)
+ - Part 1: censored (took 50.86µs)
+ - Part 2: censored (took 45.95µs)
 Day 8: Treetop Tree House
- - Part 1: censored (took 257.41µs)
- - Part 2: censored (took 208.09µs)
-Took a total of 1.04ms
+ - Part 1: censored (took 254.85µs)
+ - Part 2: censored (took 206.78µs)
+Day 9: Rope Bridge
+ - Part 1: censored (took 328.96µs)
+ - Part 2: censored (took 587.48µs)
+Took a total of 1.94ms
 ```

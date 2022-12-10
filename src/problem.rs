@@ -3,6 +3,7 @@ pub enum Solution {
     U64(u64),
     U32(u32),
     U16(u16),
+    USize(usize),
     Str(String),
 }
 
