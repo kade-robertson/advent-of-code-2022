@@ -26,24 +26,27 @@ Run on a Ryzen 7 5800X in Pop!\_OS, in release mode. Answers are censored.
 ```
 ~ Advent of Code 2022 ~
 Day 1: Calorie Counting
- - Part 1: censored (took 44.06µs)
- - Part 2: censored (took 47.51µs)
+ - Part 1: censored (took 46.19µs)
+ - Part 2: censored (took 47.93µs)
 Day 2: Rock Paper Scissors
- - Part 1: censored (took 40.40µs)
- - Part 2: censored (took 51.13µs)
+ - Part 1: censored (took 38.46µs)
+ - Part 2: censored (took 49.19µs)
 Day 3: Rucksack Reorganization
- - Part 1: censored (took 43.23µs)
- - Part 2: censored (took 39.47µs)
+ - Part 1: censored (took 43.91µs)
+ - Part 2: censored (took 40.82µs)
 Day 4: Camp Cleanup
- - Part 1: censored (took 55.55µs)
- - Part 2: censored (took 41.89µs)
+ - Part 1: censored (took 41.91µs)
+ - Part 2: censored (took 42.54µs)
 Day 5: Supply Stacks
- - Part 1: censored (took 125.25µs)
- - Part 2: censored (took 103.81µs)
+ - Part 1: censored (took 123.64µs)
+ - Part 2: censored (took 99.53µs)
 Day 6: Tuning Trouble
- - Part 1: censored (took 8.68µs)
- - Part 2: censored (took 22.95µs)
-Took a total of 623.97µs
+ - Part 1: censored (took 7.64µs)
+ - Part 2: censored (took 22.08µs)
+Day 7: No Space Left On Device
+ - Part 1: censored (took 59.31µs)
+ - Part 2: censored (took 55.97µs)
+Took a total of 719.17µs
 ```
 
 Averaged over 10 runs (using `--bench` option):
@@ -51,22 +54,25 @@ Averaged over 10 runs (using `--bench` option):
 ```
 ~ Advent of Code 2022 ~
 Day 1: Calorie Counting
- - Part 1: censored (took 35.56µs)
- - Part 2: censored (took 36.70µs)
+ - Part 1: censored (took 36.47µs)
+ - Part 2: censored (took 39.59µs)
 Day 2: Rock Paper Scissors
- - Part 1: censored (took 37.40µs)
- - Part 2: censored (took 46.02µs)
+ - Part 1: censored (took 35.93µs)
+ - Part 2: censored (took 44.46µs)
 Day 3: Rucksack Reorganization
- - Part 1: censored (took 25.02µs)
- - Part 2: censored (took 16.95µs)
+ - Part 1: censored (took 28.23µs)
+ - Part 2: censored (took 18.61µs)
 Day 4: Camp Cleanup
- - Part 1: censored (took 36.86µs)
- - Part 2: censored (took 36.52µs)
+ - Part 1: censored (took 38.30µs)
+ - Part 2: censored (took 37.23µs)
 Day 5: Supply Stacks
- - Part 1: censored (took 113.92µs)
- - Part 2: censored (took 103.77µs)
+ - Part 1: censored (took 108.94µs)
+ - Part 2: censored (took 101.36µs)
 Day 6: Tuning Trouble
- - Part 1: censored (took 6.77µs)
- - Part 2: censored (took 21.89µs)
-Took a total of 517.37µs
+ - Part 1: censored (took 6.70µs)
+ - Part 2: censored (took 21.88µs)
+Day 7: No Space Left On Device
+ - Part 1: censored (took 52.98µs)
+ - Part 2: censored (took 47.54µs)
+Took a total of 618.22µs
 ```
