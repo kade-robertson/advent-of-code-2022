@@ -17,6 +17,7 @@ mod problem_06;
 mod problem_07;
 mod problem_08;
 mod problem_09;
+mod square_grid;
 mod util;
 
 fn main() {

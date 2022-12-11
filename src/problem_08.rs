@@ -1,15 +1,16 @@
-use crate::problem::{Problem, Solution};
+use crate::{
+    problem::{Problem, Solution},
+    square_grid::SquareGrid,
+};
 
 struct Forest {
-    grid_size: usize,
-    trees: Vec<u8>,
+    trees: SquareGrid<u8>,
 }
 
 impl Forest {
     pub fn new(grid_size: usize) -> Self {
         Self {
-            grid_size,
-            trees: Vec::with_capacity(grid_size * grid_size),
+            trees: SquareGrid::new(grid_size),
         }
     }
 
@@ -17,59 +18,47 @@ impl Forest {
         self.trees.extend(heights);
     }
 
-    pub fn tree_at(&self, row: usize, col: usize) -> u8 {
-        self.trees[(row * self.grid_size) + col]
-    }
-
     pub fn find_visible(&self) -> u32 {
-        let exterior_total = (self.grid_size * 4) - 4;
-        let end_of_grid = self.grid_size - 1;
+        let exterior_total = (self.trees.size * 4) - 4;
 
         (exterior_total
             + self
                 .trees
-                .iter()
-                .enumerate()
-                .map(|(i, c)| (c, i / self.grid_size, i % self.grid_size))
-                .filter(|(_, row, col)| {
-                    *row != 0 && *row != end_of_grid && *col != 0 && *col != end_of_grid
-                })
+                .iter_no_border()
                 .filter(|(h, row, col)| {
-                    (0..*row).all(|i| self.tree_at(i, *col) < **h)
-                        || (*row + 1..self.grid_size).all(|i| self.tree_at(i, *col) < **h)
-                        || (0..*col).all(|i| self.tree_at(*row, i) < **h)
-                        || (*col + 1..self.grid_size).all(|i| self.tree_at(*row, i) < **h)
+                    (0..*row).all(|i| self.trees.get(i, *col) < *h)
+                        || (*row + 1..self.trees.size).all(|i| self.trees.get(i, *col) < *h)
+                        || (0..*col).all(|i| self.trees.get(*row, i) < *h)
+                        || (*col + 1..self.trees.size).all(|i| self.trees.get(*row, i) < *h)
                 })
                 .count()) as u32
     }
 
     pub fn best_scenic_score(&self) -> u32 {
-        let end_of_grid = self.grid_size - 1;
+        let end_of_grid = self.trees.size - 1;
 
         self.trees
-            .iter()
-            .enumerate()
-            .map(|(i, c)| (c, i / self.grid_size, i % self.grid_size))
+            .map_row_col()
             .map(|(h, row, col)| {
                 if row == 0 || row == end_of_grid || col == 0 || col == end_of_grid {
                     return 0;
                 }
                 let up_collision = (0usize..row)
-                    .filter(|i| self.tree_at(*i, col) >= *h)
+                    .filter(|i| self.trees.get(*i, col) >= h)
                     .next_back()
                     .map_or(row, |t| row - t);
 
-                let down_collision = (row + 1..self.grid_size)
-                    .find(|i| self.tree_at(*i, col) >= *h)
+                let down_collision = (row + 1..self.trees.size)
+                    .find(|i| self.trees.get(*i, col) >= h)
                     .map_or(end_of_grid - row, |t| t - row);
 
                 let left_collision = (0usize..col)
-                    .filter(|i| self.tree_at(row, *i) >= *h)
+                    .filter(|i| self.trees.get(row, *i) >= h)
                     .next_back()
                     .map_or(col, |t| col - t);
 
-                let right_collision = (col + 1..self.grid_size)
-                    .find(|i| self.tree_at(row, *i) >= *h)
+                let right_collision = (col + 1..self.trees.size)
+                    .find(|i| self.trees.get(row, *i) >= h)
                     .map_or(end_of_grid - col, |t| t - col);
 
                 up_collision * down_collision * left_collision * right_collision
