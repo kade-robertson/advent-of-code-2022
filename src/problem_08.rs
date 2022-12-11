@@ -18,18 +18,81 @@ impl Forest {
         self.trees.extend(heights);
     }
 
+    pub fn left_max_height(&self) -> SquareGrid<u8> {
+        let mut new_grid = self.trees.clone();
+
+        for row in 0..new_grid.size {
+            for col in 1..new_grid.size {
+                let previous = *self.trees.get(row, col - 1);
+                let new_previous = *new_grid.get(row, col - 1);
+                new_grid.set(row, col, previous.max(new_previous));
+            }
+        }
+
+        new_grid
+    }
+
+    pub fn right_max_height(&self) -> SquareGrid<u8> {
+        let mut new_grid = self.trees.clone();
+
+        for row in 0..new_grid.size {
+            for col in 2..new_grid.size + 1 {
+                let col_rev = new_grid.size - col;
+                let previous = *self.trees.get(row, col_rev + 1);
+                let new_previous = *new_grid.get(row, col_rev + 1);
+                new_grid.set(row, col_rev, previous.max(new_previous));
+            }
+        }
+
+        new_grid
+    }
+
+    pub fn top_max_height(&self) -> SquareGrid<u8> {
+        let mut new_grid = self.trees.clone();
+
+        for row in 1..new_grid.size {
+            for col in 0..new_grid.size {
+                let previous = *self.trees.get(row - 1, col);
+                let new_previous = *new_grid.get(row - 1, col);
+                new_grid.set(row, col, previous.max(new_previous));
+            }
+        }
+
+        new_grid
+    }
+
+    pub fn bottom_max_height(&self) -> SquareGrid<u8> {
+        let mut new_grid = self.trees.clone();
+
+        for row in 2..new_grid.size + 1 {
+            let row_rev = new_grid.size - row;
+            for col in 0..new_grid.size {
+                let previous = *self.trees.get(row_rev + 1, col);
+                let new_previous = *new_grid.get(row_rev + 1, col);
+                new_grid.set(row_rev, col, previous.max(new_previous));
+            }
+        }
+
+        new_grid
+    }
+
     pub fn find_visible(&self) -> u32 {
         let exterior_total = (self.trees.size * 4) - 4;
+
+        let left_heights = self.left_max_height();
+        let right_heights = self.right_max_height();
+        let top_heights = self.top_max_height();
+        let bottom_heights = self.bottom_max_height();
 
         (exterior_total
             + self
                 .trees
                 .iter_no_border()
                 .filter(|(h, row, col)| {
-                    (0..*row).all(|i| self.trees.get(i, *col) < *h)
-                        || (*row + 1..self.trees.size).all(|i| self.trees.get(i, *col) < *h)
-                        || (0..*col).all(|i| self.trees.get(*row, i) < *h)
-                        || (*col + 1..self.trees.size).all(|i| self.trees.get(*row, i) < *h)
+                    top_heights.get(*row, *col) < h
+                        || bottom_heights.get(*row, *col) < h
+                        || left_heights.get(*row, *col) < h
+                        || right_heights.get(*row, *col) < h
                 })
                 .count()) as u32
     }
@@ -38,11 +101,8 @@ impl Forest {
         let end_of_grid = self.trees.size - 1;
 
         self.trees
-            .map_row_col()
+            .iter_no_border()
             .map(|(h, row, col)| {
-                if row == 0 || row == end_of_grid || col == 0 || col == end_of_grid {
-                    return 0;
-                }
                 let up_collision = (0usize..row)
                     .filter(|i| self.trees.get(*i, col) >= h)
                     .next_back()

@@ -2,6 +2,7 @@
 
 use std::{fmt::Display, slice::ChunksExact};
 
+#[derive(Clone)]
 pub struct SquareGrid<T> {
     pub size: usize,
     elements: Vec<T>,
@@ -27,7 +28,7 @@ impl<T> SquareGrid<T> {
         self.elements[(row * self.size) + col] = value;
     }
 
-    pub fn map_row_col(&self) -> impl Iterator<Item = (&T, usize, usize)> {
+    pub fn iter_row_col(&self) -> impl Iterator<Item = (&T, usize, usize)> {
         self.elements
             .iter()
             .enumerate()
@@ -35,19 +36,19 @@ impl<T> SquareGrid<T> {
     }
 
     pub fn iter_no_border(&self) -> impl Iterator<Item = (&T, usize, usize)> {
-        self.map_row_col().filter(|(_, row, col)| {
-            *row != 0 && *row != (self.size - 1) && *col != 0 && *col != (self.size - 1)
+        self.iter_row_col().filter(|(_, row, col)| {
+            (1..self.size - 1).contains(row) && (1..self.size - 1).contains(col)
         })
     }
 
-    pub fn row_elements(&self, row: usize) -> impl Iterator<Item = &T> {
+    pub fn iter_row(&self, row: usize) -> impl Iterator<Item = &T> {
         self.elements
             .iter()
             .skip((row * self.size) - 1)
             .take(self.size)
     }
 
-    pub fn iter_row(&self) -> ChunksExact<T> {
+    pub fn iter_rows(&self) -> ChunksExact<T> {
         self.elements.chunks_exact(self.size)
     }
 }
